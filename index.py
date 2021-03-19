@@ -2,7 +2,6 @@ from tkinter import *
 from tkinter.filedialog import *
 from tkinter.messagebox import *
 from random import *
-from re import *
 
 #=== A hangman game by mibi88===
 
@@ -71,6 +70,7 @@ def run():
    mainframe.pack()
 def tryletter(letter):
    #try the letter
+   org_res = resultword.get()
    wordvar = word.get()
    letters_full = wordlen.get()
    nbtryvar = nbtry.get()
@@ -84,16 +84,20 @@ def tryletter(letter):
          result += letter
          letterfound = 1
       else:
-         result += "_"
+         in_word = org_res[scrolled_letters:endnb]
+         if in_word == "_":
+            result += "_"
+         else:
+            result += in_word
       scrolled_letters += 1
    if letterfound == 0:
       nbtryvar = nbtryvar - 1
-      if nbtryvar == 1:
-         game_over()
-      else:
-         win()
    resultword.set(result)
    nbtry.set(nbtryvar)
+   if nbtryvar == 0:
+      game_over()
+   if wordvar == result:
+      win()
 def acom():
    tryletter("A")
 def bcom():
