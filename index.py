@@ -2,7 +2,6 @@ from tkinter import *
 from tkinter.filedialog import *
 from tkinter.messagebox import *
 from random import *
-from re import *
 
 #=== A hangman game by mibi88===
 
