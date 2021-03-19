@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter.filedialog import *
 from tkinter.messagebox import *
 from random import *
+from re import *
 
 #=== A hangman game by mibi88===
 
@@ -15,6 +16,7 @@ word = StringVar("")
 resultword = StringVar("")
 wordlen = IntVar()
 nbtry = IntVar()
+letterspressed = StringVar("")
 #=========================================
 
 #=========================================
@@ -25,6 +27,7 @@ nbtry = IntVar()
 def run():
    gameover.pack_forget()
    nbtry.set(10)
+   letterspressed.set("")
    filename = dicoadress.get()
    print(filename)
    dictionnary = open(filename, mode="r", encoding="utf8")
@@ -60,7 +63,7 @@ def run():
    scroll = 0
    resvar = ""
    while scroll != len_selword:
-      resvar += "_"
+      resvar += "*"
       scroll += 1
    resultword.set(resvar)
    #print(word.get())
@@ -69,35 +72,41 @@ def run():
    chooseframe.pack_forget()
    mainframe.pack()
 def tryletter(letter):
-   #try the letter
-   org_res = resultword.get()
-   wordvar = word.get()
-   letters_full = wordlen.get()
-   nbtryvar = nbtry.get()
-   scrolled_letters = 0
-   result = ""
-   letterfound = 0
-   while letters_full != scrolled_letters:
-      endnb = scrolled_letters + 1
-      lettertotest = wordvar[scrolled_letters:endnb]
-      if lettertotest == letter:
-         result += letter
-         letterfound = 1
-      else:
-         in_word = org_res[scrolled_letters:endnb]
-         if in_word == "_":
-            result += "_"
+   usedletters = letterspressed.get()
+   if not letter in usedletters:
+      #try the letter
+      org_res = resultword.get()
+      wordvar = word.get()
+      letters_full = wordlen.get()
+      nbtryvar = nbtry.get()
+      scrolled_letters = 0
+      result = ""
+      letterfound = 0
+      while letters_full != scrolled_letters:
+         endnb = scrolled_letters + 1
+         lettertotest = wordvar[scrolled_letters:endnb]
+         if lettertotest == letter:
+            result += letter
+            letterfound = 1
          else:
-            result += in_word
-      scrolled_letters += 1
-   if letterfound == 0:
-      nbtryvar = nbtryvar - 1
-   resultword.set(result)
-   nbtry.set(nbtryvar)
-   if nbtryvar == 0:
-      game_over()
-   if wordvar == result:
-      win()
+            in_word = org_res[scrolled_letters:endnb]
+            if in_word == "*":
+               result += "*"
+            else:
+               result += in_word
+         scrolled_letters += 1
+      if letterfound == 0:
+         nbtryvar = nbtryvar - 1
+      resultword.set(result)
+      nbtry.set(nbtryvar)
+      if nbtryvar == 0:
+         game_over()
+      if wordvar == result:
+         win()
+      usedletters += letter
+      letterspressed.set(usedletters)
+   else:
+         showinfo("Info ...", "Already tested letter.")
 def acom():
    tryletter("A")
 def bcom():
@@ -151,7 +160,9 @@ def ycom():
 def zcom():
    tryletter("Z")
 def game_over():
-   gameover.config(text="Game Over !")
+   wordvar = word.get()
+   msg = "Game Over !\nThe word was :\n" + wordvar
+   gameover.config(text=msg)
    gameover.pack()
 def win():
    gameover.config(text="You win !")
@@ -276,6 +287,9 @@ zbutt = Button(line5, text="Z", command=zcom)
 zbutt.pack(fill="both", side=LEFT)
 #"Go back" button :
 backbutt = Button(mainframe, text="Go back", command=go_back)
+backbutt.pack(fill="both")
+#"Restart" button :
+backbutt = Button(mainframe, text="Restart", command=run)
 backbutt.pack(fill="both")
 #Don't pack this frame :
 mainframe.pack_forget()
