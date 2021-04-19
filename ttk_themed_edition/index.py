@@ -9,8 +9,8 @@ from random import *
 
 main = ThemedTk(theme="ubuntu")
 main.title("Hangman game")
-chooseframe = ttk.LabelFrame(main, text="Start a new game")
-chooseframe.pack(fill="both", expand = True)
+chooseFrame = ttk.LabelFrame(main, text="Start a new game")
+chooseFrame.pack(fill="both", expand = True)
 #=================variables=================
 dicoadress = StringVar("")
 word = StringVar("")
@@ -19,6 +19,15 @@ wordlen = IntVar()
 nbtry = IntVar()
 letterspressed = StringVar("")
 imgvar = StringVar("")
+#===for the dictionnary===
+authorvar = StringVar("")
+versionvar = StringVar("")
+datevar = StringVar("")
+langvar = StringVar("")
+licensevar = StringVar("")
+subjectvar = StringVar("")
+descvar = StringVar("")
+long_descvar = StringVar("")
 #=========================================
 
 #=========================================
@@ -133,6 +142,53 @@ def unbind_ev():
     main.unbind("X")
     main.unbind("Y")
     main.unbind("Z")
+def dico_dataget():
+    filename = dicoadress.get()
+    print(filename)
+    dictionnary = open(filename, mode="r", encoding="utf8")
+    fulldico = dictionnary.readlines()
+    print(fulldico)
+    fulldico_lenght = len(fulldico)
+    print("Scanning dictionnary :")
+    line_nb = 0
+    for line in fulldico:
+        line = line.replace("\data-language: ", "")
+        if "\data-version: " in line:
+           version = line.replace("\data-version: ", "")
+        if "\data-author: " in line:
+           author = line.replace("\data-author: ", "")
+        if "\data-date: " in line:
+           date = line.replace("\data-date: ", "")
+        if "\data-subject: " in line:
+           subject = line.replace("\data-subject: ", "")
+        if "\data-language: " in line:
+            lang = line.replace("\data-language: ", "")
+        if "\data-license: " in line:
+           license_v = line.replace("\data-license: ", "")
+        if "\data-desc: " in line:
+           desc = line.replace("\data-desc: ", "")
+        if "\data-longdesc: {" in line:
+           longdesc = line.replace("\data-longdesc: {", "")
+        if "/" in line:
+           longdesc += line.replace("/", "\n")
+        if "lang-EN_US" in line:
+           lang = line.replace("lang-EN_US", "english")
+        if "lang-FR" in line:
+           lang = line.replace("lang-FR", "français")
+        if "lang-DE" in line:
+           lang = line.replace("lang-DE", "deutsch")
+        line_nb += 1
+        stat = fulldico_lenght // 100
+        stat = stat * line_nb
+        print(str(stat) + "%")
+    authorvar.set("Author : " + author)
+    versionvar.set("Version : " + version)
+    datevar.set("Date : " + date)
+    langvar.set("Language : " + lang)
+    licensevar.set("License : " + license_v)
+    subjectvar.set("Subject : " + subject)
+    descvar.set("Short description : " + desc)
+    long_descvar.set("Full description : \n" + longdesc)
 def run():
    gameover.pack_forget()
    nbtry.set(10)
@@ -161,8 +217,22 @@ def run():
    print(word.get())
    """
    selword = choice(dictionnarylist)
-   while selword == "\n":
-      selword = choice(dictionnarylist)
+   badchar = True
+   while badchar == True:
+       if selword == "\n":
+          selword = choice(dictionnarylist)
+          badchar = True
+       elif "\\data" in selword:
+          selword = choice(dictionnarylist)
+          badchar = True
+       elif "/" in selword:
+          selword = choice(dictionnarylist)
+          badchar = True
+       elif "}" in selword:
+          selword = choice(dictionnarylist)
+          badchar = True
+       else:
+           badchar = False
    if "\n" in selword:
       selword = selword.replace("\n", "", 1)
    selword = selword.upper()
@@ -192,8 +262,8 @@ def run():
       #print(word.get())
       print(wordlen.get())
       print(nbtry.get())
-      chooseframe.pack_forget()
-      mainframe.pack(fill = "both", expand = True)
+      chooseFrame.pack_forget()
+      mainFrame.pack(fill = "both", expand = True)
       #hangman_drawing.pack(side = RIGHT, fill = "both", expand=True)
       letterbind()
 def tryletter(letter):
@@ -294,25 +364,25 @@ def win():
    gameover.pack()
 #=========================================
 
-#==================frame==================
-mainframe = ttk.LabelFrame(main, text="Hangman game")
-mainframe.pack(fill="both", expand = True)
+#==================ttk.Frame==================
+mainFrame = ttk.LabelFrame(main, text="Hangman game")
+mainFrame.pack(fill="both", expand = True)
 #:::
 def go_back():
-   mainframe.pack_forget()
-   chooseframe.pack(fill="both", expand = True)
+   mainFrame.pack_forget()
+   chooseFrame.pack(fill="both", expand = True)
    unbind_ev()
 #:::
-leftframe = ttk.Frame(mainframe, relief=FLAT)
-leftframe.pack(fill="both", expand = True, side = LEFT)
+leftFrame = ttk.Frame(mainFrame, relief=FLAT)
+leftFrame.pack(fill="both", expand = True, side = LEFT)
 
-wordl = ttk.Label(leftframe, textvariable = resultword)
+wordl = ttk.Label(leftFrame, textvariable = resultword)
 wordl.pack()
 #:::
-tryf = ttk.Frame(leftframe, relief=FLAT)
+tryf = ttk.Frame(leftFrame, relief=FLAT)
 tryf.pack(fill="both")
 #---
-gameover = ttk.Label(leftframe, text = "Game Over !")
+gameover = ttk.Label(leftFrame, text = "Game Over !")
 gameover.pack()
 #---
 info1 = ttk.Label(tryf, text="Remaining tests :")
@@ -320,22 +390,22 @@ info1.pack(side=LEFT)
 trynb_l = ttk.Label(tryf, textvariable = nbtry)
 trynb_l.pack(side=LEFT)
 #:::
-#frames :
-line1 = ttk.Frame(leftframe, relief=FLAT)
+#ttk.Frames :
+line1 = ttk.Frame(leftFrame, relief=FLAT)
 line1.pack(fill="both", expand = True)
 #---
-line2 = ttk.Frame(leftframe, relief=FLAT)
+line2 = ttk.Frame(leftFrame, relief=FLAT)
 line2.pack(fill="both", expand = True)
 #---
-line3 = ttk.Frame(leftframe, relief=FLAT)
+line3 = ttk.Frame(leftFrame, relief=FLAT)
 line3.pack(fill="both", expand = True)
 #---
-line4 = ttk.Frame(leftframe, relief=FLAT)
+line4 = ttk.Frame(leftFrame, relief=FLAT)
 line4.pack(fill="both", expand = True)
 #---
-line5 = ttk.Frame(leftframe, relief=FLAT)
+line5 = ttk.Frame(leftFrame, relief=FLAT)
 line5.pack(fill="both", expand = True)
-#buttons
+#ttk.Buttons
 #=A=
 abutt = ttk.Button(line1, text="A", command=acom)
 abutt.pack(side=LEFT, fill="both", expand = True)
@@ -414,17 +484,17 @@ ybutt.pack(side=LEFT, fill="both", expand = True)
 #=Z=
 zbutt = ttk.Button(line5, text="Z", command=zcom)
 zbutt.pack(side=LEFT, fill="both", expand = True)
-#"Go back" button :
-backbutt = ttk.Button(leftframe, text="Go back", command=go_back)
+#"Go back" ttk.Button :
+backbutt = ttk.Button(leftFrame, text="Go back", command=go_back)
 backbutt.pack(fill="both", expand = True)
-#"Restart" button :
-backbutt = ttk.Button(leftframe, text="Restart", command=run)
+#"Restart" ttk.Button :
+backbutt = ttk.Button(leftFrame, text="Restart", command=run)
 backbutt.pack(fill="both", expand = True)
 #===
-#Don't pack this frame :
-mainframe.pack_forget()
+#Don't pack this ttk.Frame :
+mainFrame.pack_forget()
 #hangman_drawing.pack_forget()
-#Don't pack the "game over !" label :
+#Don't pack the "game over !" ttk.Label :
 gameover.pack_forget()
 #=========================================
 
@@ -441,6 +511,7 @@ def loaddict():
    filename = askopenfilename(title="Load your dictionnary.",filetypes=[('Mibi dictionnaries','.mibidict'),('all files','.*')])
    dicoadress.set(filename)
    print(dicoadress.get())
+   dico_dataget()
 def play():
    dictadress = dicoadress.get()
    print(dictadress)
@@ -449,10 +520,40 @@ def play():
    else:
       showerror("Error", "Please choose a dictionnary.\nError number 1")
 #==========================================
-choosedictionnarybutt = ttk.Button(chooseframe, text="Load a dictionnary", command=loaddict)
+choosedictionnarybutt = ttk.Button(chooseFrame, text="Load a dictionnary", command=loaddict)
 choosedictionnarybutt.pack(fill="both", expand = True)
 #---
-launchbutt = ttk.Button(chooseframe, text="Play !", command=play)
+dicoattributes = ttk.LabelFrame(chooseFrame,text = "Dictionnary :")
+#authorvar
+#versionvar
+#datevar
+#langvar
+#licensevar
+#subjectvar
+#descvar
+#long_descvar
+dico_adress = ttk.Label(dicoattributes, textvariable = dicoadress)
+dico_author = ttk.Label(dicoattributes, textvariable = authorvar)
+dico_version = ttk.Label(dicoattributes, textvariable = versionvar)
+dico_language = ttk.Label(dicoattributes, textvariable = langvar)
+dico_license = ttk.Label(dicoattributes, textvariable = licensevar)
+dico_subject = ttk.Label(dicoattributes, textvariable = subjectvar)
+dico_date = ttk.Label(dicoattributes, textvariable = datevar)
+dico_description = ttk.Label(dicoattributes, textvariable = descvar)
+dico_long_description = ttk.Label(dicoattributes, textvariable = long_descvar)
+###
+dicoattributes.pack()
+dico_adress.pack()
+dico_author.pack()
+dico_version.pack()
+dico_language.pack()
+dico_license.pack()
+dico_subject.pack()
+dico_date.pack()
+dico_description.pack()
+dico_long_description.pack()
+#---
+launchbutt = ttk.Button(chooseFrame, text="Play !", command=play)
 launchbutt.pack(fill="both", expand = True)
 #==========================================
 #==========================================
