@@ -1,3 +1,18 @@
+\data-author: Mibi88
+\data-version: 1.0-mibidict-nw
+\data-date: 19-04-2021
+\data-subject: informatic
+\data-language: lang-FR
+\data-license: CC BY-NC-SA 4.0
+\data-desc: The demo dictionnary of Mibi's Hangman game.
+\data-longdesc: {The demo dictionnary of Mibi's Hangman game.
+/_______
+/It can be verry difficult to play, but he can be used as a model for making your dictionnary.
+/====
+/This dictionnary is under the CC BY-NC-SA 4.0 license, and the Hangman game is under the Unlicense.
+/-----
+/Mibi88
+}
 python
 programming
 linux
