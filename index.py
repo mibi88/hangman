@@ -216,6 +216,7 @@ def run():
    """
    selword = choice(dictionnarylist)
    badchar = True
+   search = 0
    while badchar == True:
        if selword == "\n":
           selword = choice(dictionnarylist)
@@ -231,6 +232,7 @@ def run():
           badchar = True
        else:
            badchar = False
+       search += 1
    if "\n" in selword:
       selword = selword.replace("\n", "", 1)
    selword = selword.upper()
@@ -530,26 +532,46 @@ dicoattributes = LabelFrame(chooseframe,text = "Dictionnary :")
 #subjectvar
 #descvar
 #long_descvar
-dico_adress = Label(dicoattributes, textvariable = dicoadress)
-dico_author = Label(dicoattributes, textvariable = authorvar)
-dico_version = Label(dicoattributes, textvariable = versionvar)
-dico_language = Label(dicoattributes, textvariable = langvar)
-dico_license = Label(dicoattributes, textvariable = licensevar)
-dico_subject = Label(dicoattributes, textvariable = subjectvar)
-dico_date = Label(dicoattributes, textvariable = datevar)
-dico_description = Label(dicoattributes, textvariable = descvar)
-dico_long_description = Label(dicoattributes, textvariable = long_descvar)
+dico_adressf = Frame(dicoattributes)
+dico_authorf = Frame(dicoattributes)
+dico_versionf = Frame(dicoattributes)
+dico_languagef = Frame(dicoattributes)
+dico_licensef = Frame(dicoattributes)
+dico_subjectf = Frame(dicoattributes)
+dico_datef = Frame(dicoattributes)
+dico_descriptionf = Frame(dicoattributes)
+dico_long_descriptionf = Frame(dicoattributes)
 ###
-dicoattributes.pack()
-dico_adress.pack()
-dico_author.pack()
-dico_version.pack()
-dico_language.pack()
-dico_license.pack()
-dico_subject.pack()
-dico_date.pack()
-dico_description.pack()
-dico_long_description.pack()
+dico_adress = Label(dico_adressf, textvariable = dicoadress, justify = "right")
+dico_author = Label(dico_authorf, textvariable = authorvar, justify = "left")
+dico_version = Label(dico_versionf, textvariable = versionvar, justify = "left")
+dico_language = Label(dico_languagef, textvariable = langvar, justify = "left")
+dico_license = Label(dico_licensef, textvariable = licensevar, justify = "left")
+dico_subject = Label(dico_subjectf, textvariable = subjectvar, justify = "left")
+dico_date = Label(dico_datef, textvariable = datevar, justify = "left")
+dico_description = Label(dico_descriptionf, textvariable = descvar, justify = "left")
+dico_long_description = Label(dico_long_descriptionf, textvariable = long_descvar, justify = "left")
+###
+dicoattributes.pack(fill="both", expand = True)
+dico_adress.pack(fill="both", side = LEFT)
+dico_author.pack(fill="both", side = LEFT)
+dico_version.pack(fill="both", side = LEFT)
+dico_language.pack(fill="both", side = LEFT)
+dico_license.pack(fill="both", side = LEFT)
+dico_subject.pack(fill="both", side = LEFT)
+dico_date.pack(fill="both", side = LEFT)
+dico_description.pack(fill="both", side = LEFT)
+dico_long_description.pack(fill="both", side = LEFT)
+###
+dico_adressf.pack(fill="both")
+dico_authorf.pack(fill="both")
+dico_versionf.pack(fill="both")
+dico_languagef.pack(fill="both")
+dico_licensef.pack(fill="both")
+dico_subjectf.pack(fill="both")
+dico_datef.pack(fill="both")
+dico_descriptionf.pack(fill="both")
+dico_long_descriptionf.pack(fill="both")
 #---
 launchbutt = Button(chooseframe, text="Play !", command=play)
 launchbutt.pack(fill="both", expand = True)
