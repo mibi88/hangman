@@ -9,8 +9,8 @@ from random import *
 
 main = ThemedTk(theme="ubuntu")
 main.title("Hangman game")
-chooseFrame = ttk.LabelFrame(main, text="Start a new game")
-chooseFrame.pack(fill="both", expand = True)
+chooseframe = ttk.LabelFrame(main, text="Start a new game")
+chooseframe.pack(fill="both", expand = True)
 #=================variables=================
 dicoadress = StringVar("")
 word = StringVar("")
@@ -218,6 +218,7 @@ def run():
    """
    selword = choice(dictionnarylist)
    badchar = True
+   search = 0
    while badchar == True:
        if selword == "\n":
           selword = choice(dictionnarylist)
@@ -233,6 +234,7 @@ def run():
           badchar = True
        else:
            badchar = False
+       search += 1
    if "\n" in selword:
       selword = selword.replace("\n", "", 1)
    selword = selword.upper()
@@ -262,8 +264,8 @@ def run():
       #print(word.get())
       print(wordlen.get())
       print(nbtry.get())
-      chooseFrame.pack_forget()
-      mainFrame.pack(fill = "both", expand = True)
+      chooseframe.pack_forget()
+      mainframe.pack(fill = "both", expand = True)
       #hangman_drawing.pack(side = RIGHT, fill = "both", expand=True)
       letterbind()
 def tryletter(letter):
@@ -364,25 +366,25 @@ def win():
    gameover.pack()
 #=========================================
 
-#==================ttk.Frame==================
-mainFrame = ttk.LabelFrame(main, text="Hangman game")
-mainFrame.pack(fill="both", expand = True)
+#==================frame==================
+mainframe = ttk.LabelFrame(main, text="Hangman game")
+mainframe.pack(fill="both", expand = True)
 #:::
 def go_back():
-   mainFrame.pack_forget()
-   chooseFrame.pack(fill="both", expand = True)
+   mainframe.pack_forget()
+   chooseframe.pack(fill="both", expand = True)
    unbind_ev()
 #:::
-leftFrame = ttk.Frame(mainFrame, relief=FLAT)
-leftFrame.pack(fill="both", expand = True, side = LEFT)
+leftframe = ttk.Frame(mainframe, relief=FLAT)
+leftframe.pack(fill="both", expand = True, side = LEFT)
 
-wordl = ttk.Label(leftFrame, textvariable = resultword)
+wordl = ttk.Label(leftframe, textvariable = resultword)
 wordl.pack()
 #:::
-tryf = ttk.Frame(leftFrame, relief=FLAT)
+tryf = ttk.Frame(leftframe, relief=FLAT)
 tryf.pack(fill="both")
 #---
-gameover = ttk.Label(leftFrame, text = "Game Over !")
+gameover = ttk.Label(leftframe, text = "Game Over !")
 gameover.pack()
 #---
 info1 = ttk.Label(tryf, text="Remaining tests :")
@@ -390,22 +392,22 @@ info1.pack(side=LEFT)
 trynb_l = ttk.Label(tryf, textvariable = nbtry)
 trynb_l.pack(side=LEFT)
 #:::
-#ttk.Frames :
-line1 = ttk.Frame(leftFrame, relief=FLAT)
+#frames :
+line1 = ttk.Frame(leftframe, relief=FLAT)
 line1.pack(fill="both", expand = True)
 #---
-line2 = ttk.Frame(leftFrame, relief=FLAT)
+line2 = ttk.Frame(leftframe, relief=FLAT)
 line2.pack(fill="both", expand = True)
 #---
-line3 = ttk.Frame(leftFrame, relief=FLAT)
+line3 = ttk.Frame(leftframe, relief=FLAT)
 line3.pack(fill="both", expand = True)
 #---
-line4 = ttk.Frame(leftFrame, relief=FLAT)
+line4 = ttk.Frame(leftframe, relief=FLAT)
 line4.pack(fill="both", expand = True)
 #---
-line5 = ttk.Frame(leftFrame, relief=FLAT)
+line5 = ttk.Frame(leftframe, relief=FLAT)
 line5.pack(fill="both", expand = True)
-#ttk.Buttons
+#buttons
 #=A=
 abutt = ttk.Button(line1, text="A", command=acom)
 abutt.pack(side=LEFT, fill="both", expand = True)
@@ -484,17 +486,17 @@ ybutt.pack(side=LEFT, fill="both", expand = True)
 #=Z=
 zbutt = ttk.Button(line5, text="Z", command=zcom)
 zbutt.pack(side=LEFT, fill="both", expand = True)
-#"Go back" ttk.Button :
-backbutt = ttk.Button(leftFrame, text="Go back", command=go_back)
+#"Go back" button :
+backbutt = ttk.Button(leftframe, text="Go back", command=go_back)
 backbutt.pack(fill="both", expand = True)
-#"Restart" ttk.Button :
-backbutt = ttk.Button(leftFrame, text="Restart", command=run)
+#"Restart" button :
+backbutt = ttk.Button(leftframe, text="Restart", command=run)
 backbutt.pack(fill="both", expand = True)
 #===
-#Don't pack this ttk.Frame :
-mainFrame.pack_forget()
+#Don't pack this frame :
+mainframe.pack_forget()
 #hangman_drawing.pack_forget()
-#Don't pack the "game over !" ttk.Label :
+#Don't pack the "game over !" label :
 gameover.pack_forget()
 #=========================================
 
@@ -520,10 +522,10 @@ def play():
    else:
       showerror("Error", "Please choose a dictionnary.\nError number 1")
 #==========================================
-choosedictionnarybutt = ttk.Button(chooseFrame, text="Load a dictionnary", command=loaddict)
+choosedictionnarybutt = ttk.Button(chooseframe, text="Load a dictionnary", command=loaddict)
 choosedictionnarybutt.pack(fill="both", expand = True)
 #---
-dicoattributes = ttk.LabelFrame(chooseFrame,text = "Dictionnary :")
+dicoattributes = ttk.LabelFrame(chooseframe,text = "Dictionnary :")
 #authorvar
 #versionvar
 #datevar
@@ -532,28 +534,48 @@ dicoattributes = ttk.LabelFrame(chooseFrame,text = "Dictionnary :")
 #subjectvar
 #descvar
 #long_descvar
-dico_adress = ttk.Label(dicoattributes, textvariable = dicoadress)
-dico_author = ttk.Label(dicoattributes, textvariable = authorvar)
-dico_version = ttk.Label(dicoattributes, textvariable = versionvar)
-dico_language = ttk.Label(dicoattributes, textvariable = langvar)
-dico_license = ttk.Label(dicoattributes, textvariable = licensevar)
-dico_subject = ttk.Label(dicoattributes, textvariable = subjectvar)
-dico_date = ttk.Label(dicoattributes, textvariable = datevar)
-dico_description = ttk.Label(dicoattributes, textvariable = descvar)
-dico_long_description = ttk.Label(dicoattributes, textvariable = long_descvar)
+dico_adressf = ttk.Frame(dicoattributes)
+dico_authorf = ttk.Frame(dicoattributes)
+dico_versionf = ttk.Frame(dicoattributes)
+dico_languagef = ttk.Frame(dicoattributes)
+dico_licensef = ttk.Frame(dicoattributes)
+dico_subjectf = ttk.Frame(dicoattributes)
+dico_datef = ttk.Frame(dicoattributes)
+dico_descriptionf = ttk.Frame(dicoattributes)
+dico_long_descriptionf = ttk.Frame(dicoattributes)
 ###
-dicoattributes.pack()
-dico_adress.pack()
-dico_author.pack()
-dico_version.pack()
-dico_language.pack()
-dico_license.pack()
-dico_subject.pack()
-dico_date.pack()
-dico_description.pack()
-dico_long_description.pack()
+dico_adress = ttk.Label(dico_adressf, textvariable = dicoadress, justify = "right")
+dico_author = ttk.Label(dico_authorf, textvariable = authorvar, justify = "left")
+dico_version = ttk.Label(dico_versionf, textvariable = versionvar, justify = "left")
+dico_language = ttk.Label(dico_languagef, textvariable = langvar, justify = "left")
+dico_license = ttk.Label(dico_licensef, textvariable = licensevar, justify = "left")
+dico_subject = ttk.Label(dico_subjectf, textvariable = subjectvar, justify = "left")
+dico_date = ttk.Label(dico_datef, textvariable = datevar, justify = "left")
+dico_description = ttk.Label(dico_descriptionf, textvariable = descvar, justify = "left")
+dico_long_description = ttk.Label(dico_long_descriptionf, textvariable = long_descvar, justify = "left")
+###
+dicoattributes.pack(fill="both", expand = True)
+dico_adress.pack(fill="both", side = LEFT)
+dico_author.pack(fill="both", side = LEFT)
+dico_version.pack(fill="both", side = LEFT)
+dico_language.pack(fill="both", side = LEFT)
+dico_license.pack(fill="both", side = LEFT)
+dico_subject.pack(fill="both", side = LEFT)
+dico_date.pack(fill="both", side = LEFT)
+dico_description.pack(fill="both", side = LEFT)
+dico_long_description.pack(fill="both", side = LEFT)
+###
+dico_adressf.pack(fill="both")
+dico_authorf.pack(fill="both")
+dico_versionf.pack(fill="both")
+dico_languagef.pack(fill="both")
+dico_licensef.pack(fill="both")
+dico_subjectf.pack(fill="both")
+dico_datef.pack(fill="both")
+dico_descriptionf.pack(fill="both")
+dico_long_descriptionf.pack(fill="both")
 #---
-launchbutt = ttk.Button(chooseFrame, text="Play !", command=play)
+launchbutt = ttk.Button(chooseframe, text="Play !", command=play)
 launchbutt.pack(fill="both", expand = True)
 #==========================================
 #==========================================
